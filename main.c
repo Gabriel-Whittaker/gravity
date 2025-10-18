@@ -24,7 +24,7 @@ InitWindow(1800, 1450, "Simple Screen Example");
 
 // Set the game to run at 60 frames per second
 SetTargetFPS(60);
-struct object objects[2];
+struct object objects[3];
 objects[0].force = (Vector2){0,0};
 
 objects[0].position = (Vector2){850, 600};
@@ -33,10 +33,16 @@ objects[0].velocity = (Vector2){10, 10};
 objects[1].force = (Vector2){0, 0};
 objects[0].radius = 20;
 objects[1].position = (Vector2){800, 225};
-objects[1].mass = 50;
+objects[1].mass = 250;
 objects[1].velocity = (Vector2){80, 40};
-objects[1].radius = 20;
+objects[1].radius = 30;
 
+objects[2].force = (Vector2){0, 0};
+
+objects[2].position = (Vector2){250, 600};
+objects[2].mass = 100;
+objects[2].velocity = (Vector2){20, 10};
+objects[2].radius = 25;
 // Main game loop
 while (!WindowShouldClose()) // Detect window close button or ESC key
 {
@@ -46,9 +52,10 @@ while (!WindowShouldClose()) // Detect window close button or ESC key
     // Set background color
     ClearBackground(BLACK);
 
-    for (int i = 0; i < 2; i++) {
-        for (int h =0 ; h < 2; h++) {
+    for (int i = 0; i < 3; i++) {
+        for (int h =0 ; h < 3; h++) {
             if (i != h){
+                objects[i].force = (Vector2){0,0};
                 calculateForces(&objects[i], &objects[h]);
                 updateObject(&objects[i], GetFrameTime());
                 drawObject(&objects[i]);
@@ -95,8 +102,12 @@ void calculateForces(struct object *obj1, struct object *obj2) {
     
     if (distance == 0) return; 
     Vector2 direction = {(obj2->position.x - obj1->position.x) / distance, (obj2->position.y - obj1->position.y) / distance};
-    obj1->force.x = ((G * obj1->mass * obj2->mass) / ((distance * 1000) * (distance * 1000)) * direction.x);
+    obj1->force.x += ((G * obj1->mass * obj2->mass) / ((distance * 1000) * (distance * 1000)) * direction.x);
     
-    obj1->force.y = ((G * obj1->mass * obj2->mass) / ((distance * 1000) * (distance * 1000)) * direction.y);
-
+    obj1->force.y += ((G * obj1->mass * obj2->mass) / ((distance * 1000) * (distance * 1000)) * direction.y);
+    printf("Force on obj1 from obj2: (%f, %f)\n", obj1->force.x, obj1->force.y);
+    if (distance - (obj1->radius + obj2->radius) < 0.1) {
+        obj1->force.x = 0;
+        obj1->force.y = 0;
+    }
 };
