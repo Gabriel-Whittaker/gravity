@@ -2,26 +2,45 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "build raylib",
-			"type": "shell",
-			"command": "gcc",
+			"type": "cppbuild",
+			"label": "Build Active File (Raylib)",
+			"command": "C:/raylib/w64devkit/bin/gcc.exe",
 			"args": [
-				"main.c",
+				"-fdiagnostics-color=always",
+				"-g",
+				"${file}",
+				// Output executable
 				"-o",
-				"main.exe",
+				"${fileDirname}/${fileBasenameNoExtension}.exe",
+				// Include path
+				// Include paths
 				"-I",
 				"C:/raylib/raylib/include",
+				"-I",
+				"C:/raylib/raylib/src",
+				// Library path
 				"-L",
 				"C:/raylib/raylib/lib",
+				// Link raylib + Windows dependencies
 				"-lraylib",
 				"-lopengl32",
 				"-lgdi32",
-				"-lwinmm"
+				"-lwinmm",
+				"-lkernel32",
+				"-luser32",
+				"-lshell32"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
 			],
 			"group": {
 				"kind": "build",
 				"isDefault": true
-			}
+			},
+			"detail": "Build active C file with Raylib"
 		}
 	]
 }

@@ -27,22 +27,22 @@ SetTargetFPS(60);
 struct object objects[3];
 objects[0].force = (Vector2){0,0};
 
-objects[0].position = (Vector2){850, 600};
-objects[0].mass = 50;
-objects[0].velocity = (Vector2){10, 10};
+objects[0].position = (Vector2){850, 100};
+objects[0].mass =50;
+objects[0].velocity = (Vector2){400, 10};
 objects[1].force = (Vector2){0, 0};
 objects[0].radius = 20;
-objects[1].position = (Vector2){800, 225};
-objects[1].mass = 250;
-objects[1].velocity = (Vector2){80, 40};
-objects[1].radius = 30;
+objects[1].position = (Vector2){800, 725};
+objects[1].mass = 3000;
+objects[1].velocity = (Vector2){0, 0};
+objects[1].radius = 200;
 
 objects[2].force = (Vector2){0, 0};
 
-objects[2].position = (Vector2){250, 600};
-objects[2].mass = 100;
-objects[2].velocity = (Vector2){20, 10};
-objects[2].radius = 25;
+objects[2].position = (Vector2){820, 110};
+objects[2].mass = 2;
+objects[2].velocity = (Vector2){20, 100};
+objects[2].radius = 10;
 // Main game loop
 while (!WindowShouldClose()) // Detect window close button or ESC key
 {
@@ -105,9 +105,9 @@ void calculateForces(struct object *obj1, struct object *obj2) {
     obj1->force.x += ((G * obj1->mass * obj2->mass) / ((distance * 1000) * (distance * 1000)) * direction.x);
     
     obj1->force.y += ((G * obj1->mass * obj2->mass) / ((distance * 1000) * (distance * 1000)) * direction.y);
-    printf("Force on obj1 from obj2: (%f, %f)\n", obj1->force.x, obj1->force.y);
+   // printf("Force on obj1 from obj2: (%f, %f)\n", obj1->force.x, obj1->force.y);
     if (distance - (obj1->radius + obj2->radius) < 0.1) {
-        obj1->force.x = 0;
-        obj1->force.y = 0;
+        obj1->force.x = -obj1->force.x;
+        obj1->force.y = -obj1->force.y;
     }
 };
